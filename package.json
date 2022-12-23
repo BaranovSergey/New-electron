@@ -24,12 +24,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "package": "electron-builder build --mac --win -c.extraMetadata.main=build/electron.js --publish never",
-    "preelectron-pack": "npm run build",
-    "electron-pack": "build --em.main=build/electron.js"
+    "package": "npx electron-builder build --mac --win -c.extraMetadata.main=build/electron.js --publish never",
+    "preelectron-pack": "npm run build"
   },
   "homepage": "./",
-
   "main": "public/electron.js",
   "eslintConfig": {
     "extends": [
@@ -50,13 +48,21 @@
     ]
   },
   "build": {
+    "win": {
+      "target": "nsis"
+    },
     "appId": "com.example.electron-cra",
+
     "files": [
       "build/**/*",
       "node_modules/**/*"
     ],
-    "directories":{
+    "directories": {
       "buildResources": "src"
     }
+  },
+  "devDependencies": {
+    "electron": "^22.0.0",
+    "electron-builder": "^23.6.0"
   }
 }

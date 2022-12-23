@@ -1,7 +1,8 @@
-const {app, BrowserWindow, ipcMain, dialog} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog, electron} = require('electron')
 const path = require('path');
 const XLSX = require('xlsx');
 const fs = require('fs');
+const url = require('url');
 
 let pathWay = '';
 
@@ -48,7 +49,7 @@ function parseFile(fileName) {
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
+        width: 900,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -57,8 +58,15 @@ function createWindow() {
             contextIsolation: true,
         }
     })
-    win.loadURL('http://localhost:3000');
-    // win.webContents.openDevTools();
+    // win.loadURL('http://localhost:3000');
+    win.webContents.openDevTools();
+    const startUrl = process.env.ELECTRON_START_URL || url.format({
+        pathname: path.join(__dirname, '/../build/index.html'),
+        protocol: 'file:',
+        slashes: true
+    });
+    win.loadURL(startUrl);
+
 
 }
 
